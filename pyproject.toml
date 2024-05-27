@@ -11,6 +11,7 @@ openai = "^1.30.3"
 jupyter = "^1.0.0"
 python-dotenv = "^1.0.1"
 weaviate-client = "^4.6.3"
+requests = "^2.32.2"
 
 
 [build-system]

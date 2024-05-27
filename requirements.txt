@@ -1,5 +1,0 @@
-llama-index
-openai
-jupyter
-python-dotenv
-weaviate-client
