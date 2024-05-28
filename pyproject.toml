@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "manifesto"
+name = "manifesto-qa"
 version = "0.1.0"
 description = ""
 authors = ["ed-longbottom <ed.m.longbottom@bbc.co.uk>"]
@@ -12,6 +12,7 @@ jupyter = "^1.0.0"
 python-dotenv = "^1.0.1"
 weaviate-client = "^4.6.3"
 requests = "^2.32.2"
+pandas = "^2.2.2"
 
 
 [build-system]

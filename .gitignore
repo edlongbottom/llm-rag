@@ -161,3 +161,9 @@ cython_debug/
 
 # venv
 venv-llm-rag/*
+
+# Mac files
+.DS_Store
+
+weaviate/data/*
+weaviate/storage/*
