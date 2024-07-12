@@ -1,10 +1,23 @@
-# llm-rag
-Repo for storing code for building a document chatbot using RAG and GPT
+# UK General Election Manifesto Q&A with RAG
+
+Code for building a chatbot that answers questions about UK political party policies as
+written in their manifestos for the 2024 general election, using Retrieval Augmented
+Generation (RAG).
+
+<img src="images/chat_example.png" alt="drawing" width="700"/>
+
+
+Technologies include:
+- Streamlit for creating the chat interface
+- Weaviate as the vector database for storage and retrieval of manifesto content
+- OpenAI's GPT (for generating answers) and ada models (for creating vector embeddings)
+- LangChain for chaining together document loading/chunking, context retrival and generation
+
 
 
 ## Next steps
-- Trial different methods for vector search and document chunking to optimise the bot's performance (and for own understanding)
-- Improve the chat interface by implementing memory (see - https://medium.com/snowflake/langchain-and-streamlit-rag-c5f53af8f6ba )
+- Trial different methods for vector search and document chunking to optimise the bot's performance
+- Improve the chat interface by implementing memory
 - Improve the chat by incorporating sources into the output
 - Tidy up notebooks and other code
 - Write up documentation
@@ -33,6 +46,14 @@ Docker is used to run a containerised instance of Weaviate. Use the following co
 
 ```bash
 docker compose up -d
+```
+
+### Install the application dependencies
+
+This project uses poetry for managing python dependencies. Install poetry and then run the folllowing: 
+
+```bash
+poetry install
 ```
 
 ### Run the chatbot app
