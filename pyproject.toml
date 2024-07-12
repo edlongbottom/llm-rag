@@ -17,6 +17,7 @@ langchain = "^0.2.1"
 langchain-weaviate = "^0.0.2"
 langchain-community = "^0.2.1"
 langchain-openai = "^0.1.8"
+streamlit = "^1.36.0"
 
 
 [build-system]

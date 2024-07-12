@@ -165,5 +165,11 @@ venv-llm-rag/*
 # Mac files
 .DS_Store
 
-weaviate/data/*
-weaviate/storage/*
+# vscode config
+.vscode
+
+# tutorial data
+tutorials/llama-index/data/
+tutorials/weaviate/data/
+
+tutorial_data
