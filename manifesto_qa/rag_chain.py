@@ -4,12 +4,41 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
+from langchain.llms import OpenAI
 from langchain_community.chat_models import ChatOpenAI
 from langchain.vectorstores import Weaviate
+
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+from langchain.chains import RetrievalQAWithSourcesChain
+from langchain.chains.query_constructor.base import AttributeInfo
 
 
 def get_retriever(weaviate_instance: Weaviate, **kwargs):
     return weaviate_instance.as_retriever(**kwargs)
+
+
+def get_self_query_retriever(
+    weaviate_instance: Weaviate, llm: str, **kwargs
+) -> SelfQueryRetriever:
+    return SelfQueryRetriever.from_llm(
+        llm=OpenAI(model=llm, temperature=0),
+        vectorstore=weaviate_instance,
+        document_contents="Manifestos",
+        metadata_field_info=[
+            AttributeInfo(
+                name="source",
+                description="The manifesto PDF the chunk is from",
+                type="string",
+            ),
+            AttributeInfo(
+                name="page",
+                description="The page from the manifesto",
+                type="integer",
+            ),
+        ],
+        verbose=True,
+        **kwargs,
+    )
 
 
 def get_llm(openai_model: str, openai_api_key: str, **kwargs) -> ChatOpenAI:
@@ -54,6 +83,21 @@ def run_rag_chain(
     )
     output = rag_chain.invoke(prompt)
     return output
+
+
+def run_rag_chain_with_sources(
+    retriever: Weaviate,
+    llm: ChatOpenAI,
+    prompt_template: ChatPromptTemplate,
+    prompt: str,
+) -> str:
+    rag_chain = RetrievalQAWithSourcesChain.from_llm(
+        llm=llm,
+        retriever=retriever,
+        question_prompt=prompt_template,
+    )
+    results = rag_chain.invoke({"question": prompt}, return_only_outputs=True)
+    return f"{results['answer']}\nSources: {results['sources']}"
 
 
 def run_rag_chain_with_history(

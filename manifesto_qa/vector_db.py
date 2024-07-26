@@ -26,6 +26,7 @@ class VectorDB:
             client=self._client,
             index_name=self.index_name,
             text_key="text",
+            attributes=["source", "page", "text"],
         )
 
     def reset_manifesto_schema(self) -> None:

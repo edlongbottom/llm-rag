@@ -8,7 +8,8 @@ from manifesto_qa.app import (
     llm,
     prompt_template,
     # prompt_template_with_history,
-    run_rag_chain,
+    # run_rag_chain,
+    run_rag_chain_with_sources,
     # run_rag_chain_with_history,
 )
 
@@ -39,7 +40,8 @@ if prompt := st.chat_input("What is up?"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        completion = run_rag_chain(retriever, llm, prompt_template, prompt)
+        # completion = run_rag_chain(retriever, llm, prompt_template, prompt)
+        completion = run_rag_chain_with_sources(retriever, llm, prompt_template, prompt)
         response = st.write(completion)
 
     st.session_state.messages.append({"role": "assistant", "content": completion})

@@ -17,8 +17,9 @@ Technologies include:
 
 ## Next steps
 - Trial different methods for vector search and document chunking to optimise the bot's performance
+- Explore how the bot's performance changes with different ML models
 - Improve the chat interface by implementing memory
-- Improve the chat by incorporating sources into the output
+    https://medium.com/snowflake/langchain-and-streamlit-rag-c5f53af8f6ba
 - Tidy up notebooks and other code
 - Write up documentation
 
