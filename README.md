@@ -16,12 +16,24 @@ Technologies include:
 
 
 ## Next steps
-- Trial different methods for vector search and document chunking to optimise the bot's performance
+- Enable data persistency for the vector db 
 - Explore how the bot's performance changes with different ML models
 - Improve the chat interface by implementing memory
-    https://medium.com/snowflake/langchain-and-streamlit-rag-c5f53af8f6ba
+    - [ ] Follow langchain tutorial to get a RAG chain with memory working (with self query retriever but not sources)  
+    - [ ] Work through Medium article to work out how to combine with Streamlit to manage message history
+    - [ ] Refactor code into functions 
+    - https://medium.com/snowflake/langchain-and-streamlit-rag-c5f53af8f6ba
+ 
+- Use a single `app.py` file to run the chatbot
 - Tidy up notebooks and other code
 - Write up documentation
+
+Other improvements to consider:
+- Different vector search methods (e.g. hybrid, keyword, BM25)
+- Different document loading/chunking approaches
+- Use compression to reduce the size of the context being passed (save costs)
+- Make the system flexible for switching out models (vector embeddings, generation)
+- Considerations for cloud deployment of the chatbot
 
 
 ## Setup
