@@ -1,11 +1,14 @@
+import os
+
 from weaviate import Client
+from weaviate.auth import AuthApiKey
+
 from langchain.vectorstores import Weaviate
 
 
 class VectorDB:
     def __init__(
         self,
-        weaviate_client: Client,
         index_name: str,
         text_embeddings_model: str,
         generative_model: str,
@@ -14,7 +17,7 @@ class VectorDB:
         self.text_embeddings_model = text_embeddings_model
         self.generative_model = generative_model
 
-        self._client = weaviate_client
+        self._client = self.init_client()
 
     @property
     def client(self) -> Client:
@@ -27,6 +30,13 @@ class VectorDB:
             index_name=self.index_name,
             text_key="text",
             attributes=["source", "page", "text"],
+        )
+
+    def init_client(self) -> Client:
+        return Client(
+            url=os.getenv("WEAVIATE_URL"),
+            auth_client_secret=AuthApiKey(api_key=os.getenv("WEAVIATE_API_KEY")),
+            additional_headers={"X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")},
         )
 
     def reset_manifesto_schema(self) -> None:
@@ -94,3 +104,48 @@ class VectorDB:
             ],
         }
         self._client.schema.create_class(manifesto_qa_schema)
+
+    def get_batch_with_cursor(
+        self,
+        collection: str = "ManifestoQa",
+        batch_size: int = 20,
+        properties: list[str] = ["page", "source", "text"],
+        cursor=None,
+    ) -> list[dict]:
+        query = (
+            self.client.query.get(
+                collection,
+                properties,
+            )
+            .with_additional(["id"])
+            .with_limit(batch_size)
+        )
+
+        if cursor is not None:
+            result = query.with_after(cursor).do()
+        else:
+            result = query.do()
+
+        return result["data"]["Get"][collection]
+
+    def read_all_objects(
+        self,
+        collection: str = "ManifestoQa",
+        batch_size: int = 20,
+        properties: list[str] = ["page", "source", "text"],
+    ) -> list[dict]:
+
+        results = []
+        cursor = None
+        while True:
+
+            next_batch = self.get_batch_with_cursor(
+                collection, batch_size, properties, cursor=cursor
+            )
+            if len(next_batch) == 0:
+                break
+
+            results += next_batch
+            cursor = next_batch[-1]["_additional"]["id"]
+
+        return results

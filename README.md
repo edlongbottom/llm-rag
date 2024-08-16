@@ -16,15 +16,10 @@ Technologies include:
 
 
 ## Next steps
+- Tidy up `app.py` with functions (inc. `run()`) and if/else to choose between question format  
+    based on the rag chain
 - Enable data persistency for the vector db 
-- Explore how the bot's performance changes with different ML models
-- Improve the chat interface by implementing memory
-    - [ ] Follow langchain tutorial to get a RAG chain with memory working (with self query retriever but not sources)  
-    - [ ] Work through Medium article to work out how to combine with Streamlit to manage message history
-    - [ ] Refactor code into functions 
-    - https://medium.com/snowflake/langchain-and-streamlit-rag-c5f53af8f6ba
- 
-- Use a single `app.py` file to run the chatbot
+- Explore how the bot's performance changes with different ML models (consider HF models)
 - Tidy up notebooks and other code
 - Write up documentation
 
@@ -74,7 +69,7 @@ poetry install
 Streamlit is used to run the chatbot application. Run the following command at the terminal:
 
 ```bash
-streamlit run manifesto_qa/chatbot.py
+streamlit run manifesto_qa/app.py
 ```
 
 Navigate to `localhost:8501` in a browser to interact with the chatbot. 
