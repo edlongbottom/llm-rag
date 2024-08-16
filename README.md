@@ -16,19 +16,15 @@ Technologies include:
 
 
 ## Next steps
-- Tidy up `app.py` with functions (inc. `run()`) and if/else to choose between question format  
-    based on the rag chain
-- Enable data persistency for the vector db 
 - Explore how the bot's performance changes with different ML models (consider HF models)
-- Tidy up notebooks and other code
+- Make the system flexible for switching out models (for vector embeddings, generation)
 - Write up documentation
 
 Other improvements to consider:
 - Different vector search methods (e.g. hybrid, keyword, BM25)
 - Different document loading/chunking approaches
 - Use compression to reduce the size of the context being passed (save costs)
-- Make the system flexible for switching out models (vector embeddings, generation)
-- Considerations for cloud deployment of the chatbot
+- Considerations for deployment of the chatbot
 
 
 ## Setup

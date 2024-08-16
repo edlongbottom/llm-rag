@@ -14,7 +14,7 @@ services:
     - 8080:8080
     - 50051:50051
     volumes:
-    - weaviate_data:/var/lib/weaviate
+    - ${WEAVIATE_STORAGE}:/var/lib/weaviate
     restart: on-failure:0
     environment:
       QUERY_DEFAULTS_LIMIT: 25
@@ -22,10 +22,8 @@ services:
       AUTHENTICATION_APIKEY_ENABLED: 'true'
       AUTHENTICATION_APIKEY_ALLOWED_KEYS: '${WEAVIATE_API_KEY}'
       AUTHENTICATION_APIKEY_USERS: 'ed-longbottom'
-      PERSISTENCE_DATA_PATH: '${WEAVIATE_STORAGE}'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       DEFAULT_VECTORIZER_MODULE: 'none'
       ENABLE_MODULES: 'text2vec-openai,generative-openai,qna-openai'
       CLUSTER_HOSTNAME: 'node1'
-volumes:
-  weaviate_data:
 ...

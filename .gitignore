@@ -171,5 +171,7 @@ venv-llm-rag/*
 # tutorial data
 tutorials/llama-index/data/
 tutorials/weaviate/data/
-
 tutorial_data
+
+# weaviate persisted volume
+weaviate/
