@@ -2,10 +2,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.runnables.base import Runnable
+from langchain_core.language_models.base import BaseLanguageModel
 
-from langchain_community.chat_models import ChatOpenAI
 from langchain.vectorstores import Weaviate
-
 from langchain.chains import RetrievalQAWithSourcesChain
 
 
@@ -18,7 +17,7 @@ def get_prompt_template() -> ChatPromptTemplate:
     return ChatPromptTemplate.from_template(template)
 
 
-def get_rag_chain(llm: ChatOpenAI, retriever: Weaviate) -> Runnable:
+def get_rag_chain(llm: BaseLanguageModel, retriever: Weaviate) -> Runnable:
     return (
         {"context": retriever, "question": RunnablePassthrough()}
         | get_prompt_template()
@@ -27,7 +26,7 @@ def get_rag_chain(llm: ChatOpenAI, retriever: Weaviate) -> Runnable:
     )
 
 
-def get_rag_chain_with_sources(llm: ChatOpenAI, retriever: Weaviate) -> Runnable:
+def get_rag_chain_with_sources(llm: BaseLanguageModel, retriever: Weaviate) -> Runnable:
     return RetrievalQAWithSourcesChain.from_llm(
         llm=llm,
         retriever=retriever,

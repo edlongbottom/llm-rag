@@ -3,6 +3,7 @@ from langchain.vectorstores import Weaviate
 
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain.chains.query_constructor.base import AttributeInfo
+from langchain_core.language_models.base import BaseLanguageModel
 
 
 def get_retriever(weaviate_instance: Weaviate, **kwargs):
@@ -10,10 +11,12 @@ def get_retriever(weaviate_instance: Weaviate, **kwargs):
 
 
 def get_self_query_retriever(
-    weaviate_instance: Weaviate, llm: str, **kwargs
+    weaviate_instance: Weaviate,
+    llm: BaseLanguageModel = OpenAI(model="gpt-3.5-turbo-instruct", temperature=0),
+    **kwargs
 ) -> SelfQueryRetriever:
     return SelfQueryRetriever.from_llm(
-        llm=OpenAI(model=llm, temperature=0),
+        llm=llm,
         vectorstore=weaviate_instance,
         document_contents="Manifestos",
         metadata_field_info=[

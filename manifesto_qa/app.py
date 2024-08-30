@@ -18,9 +18,14 @@ from langchain_community.chat_message_histories import StreamlitChatMessageHisto
 
 warnings.filterwarnings("ignore")
 
+### Question-answering models
+# OpenAI: "gpt-3.5-turbo", "gpt-4o-mini", "gpt-4", "gpt-4-turbo"
+# Cohere: command, command-light, command-r
+# Mistral: mistral-large-latest, mistral-medium-latest, mistral-small-latest, open-mistral-nemo
+
 TEXT_EMBEDDINGS_MODEL = "text2vec-openai"  # "text-embedding-ada-002"
-SELF_QUERY_MODEL = "gpt-3.5-turbo-instruct"
-GENERATIVE_MODEL = "gpt-3.5-turbo"
+SELF_QUERY_MODEL = "gpt-3.5-turbo"  # "gpt-3.5-turbo-instruct"
+GENERATIVE_MODEL = "command-r"
 
 WEAVIATE_INDEX_NAME = "ManifestoQa"
 WEAVIATE_TEXT_KEY = "text"
@@ -37,12 +42,13 @@ def init_vector_database(load_docs: bool = False) -> VectorDB:
 
 
 def init_rag_chain(vector_db: VectorDB) -> Runnable:
-    llm = get_llm(GENERATIVE_MODEL, os.getenv("OPENAI_API_KEY"))
+    generative_llm = get_llm(GENERATIVE_MODEL)
+    self_query_llm = get_llm(SELF_QUERY_MODEL, temperature=0.0)
     retriever = get_self_query_retriever(
-        vector_db.instance, llm=SELF_QUERY_MODEL, search_type="similarity", k=5
+        vector_db.instance, self_query_llm, search_type="similarity", k=5
     )
     rag_chain = get_rag_chain_with_memory(
-        llm, retriever, StreamlitChatMessageHistory(key="chat_history")
+        generative_llm, retriever, StreamlitChatMessageHistory(key="chat_history")
     )
     return rag_chain
 

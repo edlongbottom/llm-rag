@@ -8,17 +8,18 @@ Generation (RAG).
 
 
 Technologies include:
-- Streamlit for creating the chat interface
-- Weaviate as the vector database for storage and retrieval of manifesto content
-- OpenAI's GPT (for generating answers) and ada models (for creating vector embeddings)
-- LangChain for chaining together document loading/chunking, context retrival and generation
+- Streamlit for creating and running the chat interface
+- Weaviate as the vector database for storage and retrieval of vector embeddings of manifesto content
+- Integrations with LLMs hosted by OpenAI, Cohere, Mistral and HuggingFace for question answering
+- LangChain for chaining together document loading/chunking, context retrieval and generation
+- Docker compose is used to host the Weaviate instance
 
 
 
 ## Next steps
-- Explore how the bot's performance changes with different ML models (consider HF models)
-- Make the system flexible for switching out models (for vector embeddings, generation)
-- Write up documentation
+- Explore how the bot's performance changes with different ML models
+    - Test out the app with a few different generative models
+    - Consider how you would make the system flexible for different LLMs for vector embeddings
 
 Other improvements to consider:
 - Different vector search methods (e.g. hybrid, keyword, BM25)
@@ -31,17 +32,26 @@ Other improvements to consider:
 
 ### Configure your environment
 
-Currently the Weaviate instance is configured to use OpenAI APIs for creating vector embeddings
-from text, and to use GPT to generate model responses. 
+The application supports using generative large language models from various sources (OpenAI, Cohere, Mistral 
+and HuggingFace) for question answering. The vector database is currently configured to use an OpenAI model for 
+creating and retrieving vector embeddings. API keys must first be created to use the different model APIs.
 
-Define the following environment variables in an `.env` file at the root of the repo:
+Provide a local path for `WEAVIATE_STORAGE` so that the vector database data is persisted. 
+
+`DATA_DIR` defines the location of the documents (party manifesto PDF files)
+
+Populate the following environment variables as required in an `.env` file at the root of the repo:
 
 ```
 OPENAI_API_KEY=""
+HUGGINGFACEHUB_API_TOKEN=""
+COHERE_API_KEY=""
+MISTRAL_API_KEY=""
 
 WEAVIATE_URL="http://localhost:8080"
 WEAVIATE_API_KEY=""
 WEAVIATE_STORAGE=""
+DATA_DIR = ""
 ```
 
 ### Spin up the VectorDB

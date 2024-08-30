@@ -4,21 +4,20 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 from langchain_core.runnables.base import Runnable
 from langchain_core.retrievers import BaseRetriever
+from langchain_core.language_models.base import BaseLanguageModel
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
-
-from langchain_community.chat_models import ChatOpenAI
-
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 from langchain.chains import create_history_aware_retriever
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
+
 from langchain.memory import ChatMessageHistory
 
 
 def get_history_aware_retriever(
-    llm: ChatOpenAI, retriever: BaseRetriever
+    llm: BaseLanguageModel, retriever: BaseRetriever
 ) -> BaseRetriever:
 
     contextualize_q_system_prompt = """Given a chat history and the latest user question \
@@ -36,7 +35,7 @@ def get_history_aware_retriever(
     return create_history_aware_retriever(llm, retriever, contextualize_q_prompt)
 
 
-def get_qa_chain(llm: ChatOpenAI) -> Runnable:
+def get_qa_chain(llm: BaseLanguageModel) -> Runnable:
 
     qa_system_prompt = """You are an assistant for question-answering tasks. \
     Use the following pieces of retrieved context to answer the question. \
@@ -55,7 +54,7 @@ def get_qa_chain(llm: ChatOpenAI) -> Runnable:
     return create_stuff_documents_chain(llm, qa_prompt)
 
 
-def get_rag_chain(llm: ChatOpenAI, retriever: BaseRetriever) -> Runnable:
+def get_rag_chain(llm: BaseLanguageModel, retriever: BaseRetriever) -> Runnable:
 
     history_aware_retriever = get_history_aware_retriever(llm, retriever)
     qa_chain = get_qa_chain(llm)
@@ -66,7 +65,7 @@ def get_rag_chain(llm: ChatOpenAI, retriever: BaseRetriever) -> Runnable:
 
 
 def get_rag_chain_with_memory(
-    llm: ChatOpenAI,
+    llm: BaseLanguageModel,
     retriever: BaseRetriever,
     chat_memory: ChatMessageHistory = ChatMessageHistory(),
 ) -> RunnableWithMessageHistory:
